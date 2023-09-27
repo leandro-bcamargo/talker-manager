@@ -1,10 +1,11 @@
 const express = require("express");
 const talker = express.Router();
 const talkerDB = require("../db/talkerDB");
-
-const HTTP_OK_STATUS = 200;
-const HTTP_SERVER_ERROR = 500;
-const HTTP_NOT_FOUND = 404;
+const {
+  HTTP_NOT_FOUND,
+  HTTP_OK_STATUS,
+  HTTP_SERVER_ERROR,
+} = require("../helpers/httpStatus");
 
 talker.get("/", async (req, res) => {
   try {

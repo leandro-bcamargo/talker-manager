@@ -1,5 +1,5 @@
 const connection = require("./connection");
-const { readFile } = require("./fsUtils");
+const { readFile } = require("../helpers/fsUtils");
 
 const getAll = async () => {
   const talkers = await readFile();
