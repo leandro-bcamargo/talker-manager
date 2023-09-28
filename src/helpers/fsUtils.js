@@ -14,16 +14,10 @@ const readFile = async () => {
   }
 };
 
-const writeFile = async (talkerData) => {
+const writeFile = async (dataToWrite) => {
   try {
-    const talkers = await readFile();
-    const insertId = talkers.length + 1;
-    const newTalker = { id: insertId, ...talkerData };
-    const newTalkers = [...talkers, newTalker];
-    const newTalkersStr = JSON.stringify(newTalkers);
-    await fs.writeFile(path.resolve(__dirname, FILE_PATH), newTalkersStr);
-
-    return newTalker;
+    const dataStr = JSON.stringify(dataToWrite);
+    await fs.writeFile(path.resolve(__dirname, FILE_PATH), dataStr);
   } catch (error) {
     console.log(error.message);
     throw error;
