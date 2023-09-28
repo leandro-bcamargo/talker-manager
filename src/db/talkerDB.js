@@ -1,4 +1,4 @@
-const connection = require("./connection");
+// const connection = require("./connection");
 const { readFile, writeFile } = require("../helpers/fsUtils");
 const CustomError = require("../middlewares/customError");
 const { HTTP_NOT_FOUND } = require("../helpers/httpStatus");
@@ -45,9 +45,17 @@ const update = async (id, updateData, next) => {
   return updatedTalker;
 };
 
+const remove = async (id) => {
+  const talkers = await readFile();
+  const updatedTalkers = talkers.filter((talker) => talker.id !== id);
+  console.log("updatedTalkers:", updatedTalkers);
+  await writeFile(updatedTalkers);
+};
+
 module.exports = {
   getAll,
   getById,
   insert,
   update,
+  remove,
 };

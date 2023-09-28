@@ -62,7 +62,7 @@ const validateTalk = (talk) => {
     throw new CustomError(HTTP_CLIENT_ERROR, 'O campo "talk" é obrigatório');
 };
 
-const validateTalker = (req, res, next) => {
+const validatePostPut = (req, res, next) => {
   const { authorization } = req.headers;
   const { name, age, talk } = req.body;
   validateTalk(talk);
@@ -78,4 +78,12 @@ const validateTalker = (req, res, next) => {
   return next();
 };
 
-module.exports = validateTalker;
+const validateDelete = (req, res, next) => {
+  const { authorization } = req.headers;
+  console.log("authorization:", authorization);
+  validateAuthorization(authorization);
+
+  return next();
+};
+
+module.exports = { validatePostPut, validateDelete };

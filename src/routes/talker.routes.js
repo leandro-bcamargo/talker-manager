@@ -6,8 +6,12 @@ const {
   HTTP_OK_STATUS,
   HTTP_SERVER_ERROR,
   HTTP_CREATED,
+  HTTP_DELETED,
 } = require("../helpers/httpStatus");
-const validateTalker = require("../middlewares/validateTalker");
+const {
+  validateDelete,
+  validatePostPut,
+} = require("../middlewares/validateTalker");
 
 talker.get("/", async (req, res) => {
   try {
@@ -32,18 +36,28 @@ talker.get("/:id", async (req, res) => {
   }
 });
 
-talker.post("/", validateTalker, async (req, res) => {
+talker.post("/", validatePostPut, async (req, res) => {
   const talker = await talkerDB.insert(req.body);
   return res.status(HTTP_CREATED).json(talker);
 });
 
-talker.put("/:id", validateTalker, async (req, res, next) => {
+talker.put("/:id", validatePostPut, async (req, res, next) => {
   const { id } = req.params;
   try {
     const updateData = req.body;
     const talker = await talkerDB.update(Number(id), updateData, next);
 
     return res.status(HTTP_OK_STATUS).json(talker);
+  } catch (error) {
+    next(error);
+  }
+});
+
+talker.delete("/:id", validateDelete, async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    await talkerDB.remove(Number(id));
+    return res.status(HTTP_DELETED).end();
   } catch (error) {
     next(error);
   }
