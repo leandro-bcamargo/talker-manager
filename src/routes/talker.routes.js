@@ -5,7 +5,9 @@ const {
   HTTP_NOT_FOUND,
   HTTP_OK_STATUS,
   HTTP_SERVER_ERROR,
+  HTTP_CREATED,
 } = require("../helpers/httpStatus");
+const { validatePost } = require("../middlewares/validateTalker");
 
 talker.get("/", async (req, res) => {
   try {
@@ -28,6 +30,11 @@ talker.get("/:id", async (req, res) => {
   } catch (error) {
     return res.status(HTTP_SERVER_ERROR).json({ message: error.message });
   }
+});
+
+talker.post("/", validatePost, async (req, res) => {
+  const talker = await talkerDB.insert(req.body);
+  return res.status(HTTP_CREATED).json(talker);
 });
 
 module.exports = talker;

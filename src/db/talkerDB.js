@@ -1,5 +1,5 @@
 const connection = require("./connection");
-const { readFile } = require("../helpers/fsUtils");
+const { readFile, writeFile } = require("../helpers/fsUtils");
 
 const getAll = async () => {
   const talkers = await readFile();
@@ -14,7 +14,14 @@ const getById = async (id) => {
   return talker;
 };
 
+const insert = async (talkerData) => {
+  const newTalkers = await writeFile(talkerData);
+
+  return newTalkers;
+};
+
 module.exports = {
   getAll,
   getById,
+  insert,
 };

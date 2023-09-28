@@ -14,6 +14,23 @@ const readFile = async () => {
   }
 };
 
+const writeFile = async (talkerData) => {
+  try {
+    const talkers = await readFile();
+    const insertId = talkers.length + 1;
+    const newTalker = { id: insertId, ...talkerData };
+    const newTalkers = [...talkers, newTalker];
+    const newTalkersStr = JSON.stringify(newTalkers);
+    await fs.writeFile(path.resolve(__dirname, FILE_PATH), newTalkersStr);
+
+    return newTalker;
+  } catch (error) {
+    console.log(error.message);
+    throw error;
+  }
+};
+
 module.exports = {
   readFile,
+  writeFile,
 };
