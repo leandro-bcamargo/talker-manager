@@ -25,10 +25,15 @@ talker.get("/", async (req, res) => {
 
 talker.get("/search", validateGetSearch, async (req, res, next) => {
   try {
-    const { q } = req.query;
-    const talker = await talkerDB.getBySearch(q);
+    const { q, rate } = req.query;
+    if (rate) {
+      const talkers = await talkerDB.getByRate(Number(rate), q);
 
-    return res.status(HTTP_OK_STATUS).json(talker);
+      return res.status(HTTP_OK_STATUS).json(talkers);
+    }
+    const talkers = await talkerDB.getBySearch(q);
+
+    return res.status(HTTP_OK_STATUS).json(talkers);
   } catch (error) {
     next(error);
   }

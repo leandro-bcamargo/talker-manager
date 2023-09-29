@@ -61,6 +61,20 @@ const getBySearch = async (searchTerm) => {
 
   return selectedTalkers;
 };
+
+const getByRate = async (rate, searchTerm) => {
+  const talkers = await readFile();
+  const selectedTalkers = searchTerm
+    ? talkers.filter(
+        (talker) =>
+          talker.talk.rate === rate && talker.name.includes(searchTerm)
+      )
+    : talkers.filter((talker) => talker.talk.rate === rate);
+  console.log("selectedTalkers:", selectedTalkers);
+
+  return selectedTalkers;
+};
+
 module.exports = {
   getAll,
   getById,
@@ -68,4 +82,5 @@ module.exports = {
   update,
   remove,
   getBySearch,
+  getByRate,
 };

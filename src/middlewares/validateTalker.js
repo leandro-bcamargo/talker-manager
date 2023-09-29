@@ -86,6 +86,17 @@ const validateDelete = (req, res, next) => {
 
 const validateGetSearch = (req, res, next) => {
   const { authorization } = req.headers;
+  let { rate } = req.query;
+
+  if (rate) {
+    rate = Number(rate);
+    if (!Number.isInteger(rate) || !(rate >= 1 && rate <= 5))
+      throw new CustomError(
+        HTTP_CLIENT_ERROR,
+        'O campo "rate" deve ser um número inteiro entre 1 e 5'
+      );
+  }
+
   validateAuthorization(authorization);
 
   return next();
