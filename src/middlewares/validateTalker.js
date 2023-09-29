@@ -57,7 +57,6 @@ const validateRate = (rate) => {
 };
 
 const validateTalk = (talk) => {
-  console.log("talk:", talk);
   if (!talk)
     throw new CustomError(HTTP_CLIENT_ERROR, 'O campo "talk" é obrigatório');
 };
@@ -80,10 +79,16 @@ const validatePostPut = (req, res, next) => {
 
 const validateDelete = (req, res, next) => {
   const { authorization } = req.headers;
-  console.log("authorization:", authorization);
   validateAuthorization(authorization);
 
   return next();
 };
 
-module.exports = { validatePostPut, validateDelete };
+const validateGetSearch = (req, res, next) => {
+  const { authorization } = req.headers;
+  validateAuthorization(authorization);
+
+  return next();
+};
+
+module.exports = { validatePostPut, validateDelete, validateGetSearch };

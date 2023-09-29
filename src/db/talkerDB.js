@@ -48,14 +48,24 @@ const update = async (id, updateData, next) => {
 const remove = async (id) => {
   const talkers = await readFile();
   const updatedTalkers = talkers.filter((talker) => talker.id !== id);
-  console.log("updatedTalkers:", updatedTalkers);
+
   await writeFile(updatedTalkers);
 };
 
+const getBySearch = async (searchTerm) => {
+  const talkers = await readFile();
+  if (!searchTerm) return talkers;
+  const selectedTalkers = talkers.filter((talker) =>
+    talker.name.includes(searchTerm)
+  );
+
+  return selectedTalkers;
+};
 module.exports = {
   getAll,
   getById,
   insert,
   update,
   remove,
+  getBySearch,
 };

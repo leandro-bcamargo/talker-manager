@@ -11,6 +11,7 @@ const {
 const {
   validateDelete,
   validatePostPut,
+  validateGetSearch,
 } = require("../middlewares/validateTalker");
 
 talker.get("/", async (req, res) => {
@@ -19,6 +20,17 @@ talker.get("/", async (req, res) => {
     return res.status(HTTP_OK_STATUS).json(result);
   } catch (error) {
     return res.status(HTTP_SERVER_ERROR).json({ message: error.message });
+  }
+});
+
+talker.get("/search", validateGetSearch, async (req, res, next) => {
+  try {
+    const { q } = req.query;
+    const talker = await talkerDB.getBySearch(q);
+
+    return res.status(HTTP_OK_STATUS).json(talker);
+  } catch (error) {
+    next(error);
   }
 });
 
