@@ -6,12 +6,13 @@ const {
   HTTP_OK_STATUS,
   HTTP_SERVER_ERROR,
   HTTP_CREATED,
-  HTTP_DELETED,
+  HTTP_NO_CONTENT,
 } = require("../helpers/httpStatus");
 const {
   validateDelete,
   validatePostPut,
   validateGetSearch,
+  validatePatch,
 } = require("../middlewares/validateTalker");
 
 talker.get("/", async (req, res) => {
@@ -69,7 +70,18 @@ talker.delete("/:id", validateDelete, async (req, res, next) => {
   try {
     const { id } = req.params;
     await talkerDB.remove(Number(id));
-    return res.status(HTTP_DELETED).end();
+    return res.status(HTTP_NO_CONTENT).end();
+  } catch (error) {
+    next(error);
+  }
+});
+
+talker.patch("/rate/:id", validatePatch, async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const { rate } = req.body;
+    await talkerDB.updateRate(Number(id), Number(rate));
+    return res.status(HTTP_NO_CONTENT).end();
   } catch (error) {
     next(error);
   }

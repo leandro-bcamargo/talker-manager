@@ -112,4 +112,18 @@ const validateGetSearch = (req, res, next) => {
   return next();
 };
 
-module.exports = { validatePostPut, validateDelete, validateGetSearch };
+const validatePatch = (req, res, next) => {
+  const { authorization } = req.headers;
+  const { rate } = req.body;
+  validateAuthorization(authorization);
+  validateRate(rate);
+
+  return next();
+};
+
+module.exports = {
+  validatePostPut,
+  validateDelete,
+  validateGetSearch,
+  validatePatch,
+};

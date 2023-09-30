@@ -64,39 +64,17 @@ const getTalkers = async (searchTerm, rate, date) => {
   return selectedTalkers;
 };
 
-// const getBySearch = async (searchTerm) => {
-//   const talkers = await readFile();
-//   if (!searchTerm) return talkers;
-//   const selectedTalkers = talkers.filter((talker) =>
-//     talker.name.includes(searchTerm)
-//   );
+const updateRate = async (id, rate) => {
+  const talkers = await readFile();
+  const updatedTalkers = talkers.map((talker) => {
+    if (talker.id === id) {
+      talker.talk.rate = rate;
+    }
+    return talker;
+  });
 
-//   return selectedTalkers;
-// };
-
-// const getByRate = async (rate, searchTerm) => {
-//   const talkers = await readFile();
-//   const selectedTalkers = talkers.filter(
-//     (talker) =>
-//       talker.talk.rate === rate &&
-//       (!searchTerm || talker.name.includes(searchTerm))
-//   );
-
-//   return selectedTalkers;
-// };
-
-// const getByDate = async (date, rate, searchTerm) => {
-//   const talkers = await readFile();
-//   if (!date) return talkers;
-//   const selectedTalkers = talkers.filter(
-//     (talker) =>
-//       talker.talk.watchedAt === date &&
-//       (!rate || talker.talk.rate === rate) &&
-//       (!searchTerm || talker.name.includes(searchTerm))
-//   );
-
-//   return selectedTalkers;
-// };
+  await writeFile(updatedTalkers);
+};
 
 module.exports = {
   getAll,
@@ -105,7 +83,5 @@ module.exports = {
   update,
   remove,
   getTalkers,
-  // getBySearch,
-  // getByRate,
-  // getByDate,
+  updateRate,
 };
