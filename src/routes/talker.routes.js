@@ -14,6 +14,7 @@ const {
   validateGetSearch,
   validatePatch,
 } = require("../middlewares/validateTalker");
+const CustomError = require("../middlewares/customError");
 
 talker.get("/", async (req, res) => {
   try {
@@ -41,17 +42,18 @@ talker.get("/search", validateGetSearch, async (req, res, next) => {
   }
 });
 
-talker.get("/:id", async (req, res) => {
+talker.get("/:id", async (req, res, next) => {
   try {
     const { id } = req.params;
     const result = await talkerDB.getById(Number(id));
     if (!result)
-      return res
-        .status(HTTP_NOT_FOUND)
-        .json({ message: "Pessoa palestrante não encontrada" });
+      throw new CustomError(
+        HTTP_NOT_FOUND,
+        "Pessoa palestrante não encontrada"
+      );
     return res.status(HTTP_OK_STATUS).json(result);
   } catch (error) {
-    return res.status(HTTP_SERVER_ERROR).json({ message: error.message });
+    next(error);
   }
 });
 
