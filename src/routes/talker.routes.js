@@ -24,6 +24,12 @@ talker.get("/", async (req, res) => {
   }
 });
 
+talker.get("/db", async (req, res) => {
+  const talkers = await talkerDB.getTalkersDB();
+
+  return res.status(HTTP_OK_STATUS).json(talkers);
+});
+
 talker.get("/search", validateGetSearch, async (req, res, next) => {
   try {
     const { q, rate, date } = req.query;

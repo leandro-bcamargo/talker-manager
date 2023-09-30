@@ -1,4 +1,4 @@
-// const connection = require("./connection");
+const connection = require("./connection");
 const { readFile, writeFile } = require("../helpers/fsUtils");
 const CustomError = require("../middlewares/customError");
 const { HTTP_NOT_FOUND } = require("../helpers/httpStatus");
@@ -76,6 +76,26 @@ const updateRate = async (id, rate) => {
   await writeFile(updatedTalkers);
 };
 
+const getTalkersDB = async () => {
+  let [talkers] = await connection.execute(`
+    SELECT * FROM TalkerDB.talkers
+  `);
+
+  talkers = talkers.map((talker) => {
+    return {
+      id: talker.id,
+      name: talker.name,
+      age: talker.age,
+      talk: {
+        rate: talker.talk_rate,
+        watchedAt: talker.talk_watched_at,
+      },
+    };
+  });
+
+  return talkers;
+};
+
 module.exports = {
   getAll,
   getById,
@@ -84,4 +104,5 @@ module.exports = {
   remove,
   getTalkers,
   updateRate,
+  getTalkersDB,
 };
