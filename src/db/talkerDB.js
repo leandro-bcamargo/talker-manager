@@ -52,28 +52,51 @@ const remove = async (id) => {
   await writeFile(updatedTalkers);
 };
 
-const getBySearch = async (searchTerm) => {
+const getTalkers = async (searchTerm, rate, date) => {
   const talkers = await readFile();
-  if (!searchTerm) return talkers;
-  const selectedTalkers = talkers.filter((talker) =>
-    talker.name.includes(searchTerm)
+  const selectedTalkers = talkers.filter(
+    (talker) =>
+      (!searchTerm || talker.name.includes(searchTerm)) &&
+      (!rate || talker.talk.rate === rate) &&
+      (!date || talker.talk.watchedAt === date)
   );
 
   return selectedTalkers;
 };
 
-const getByRate = async (rate, searchTerm) => {
-  const talkers = await readFile();
-  const selectedTalkers = searchTerm
-    ? talkers.filter(
-        (talker) =>
-          talker.talk.rate === rate && talker.name.includes(searchTerm)
-      )
-    : talkers.filter((talker) => talker.talk.rate === rate);
-  console.log("selectedTalkers:", selectedTalkers);
+// const getBySearch = async (searchTerm) => {
+//   const talkers = await readFile();
+//   if (!searchTerm) return talkers;
+//   const selectedTalkers = talkers.filter((talker) =>
+//     talker.name.includes(searchTerm)
+//   );
 
-  return selectedTalkers;
-};
+//   return selectedTalkers;
+// };
+
+// const getByRate = async (rate, searchTerm) => {
+//   const talkers = await readFile();
+//   const selectedTalkers = talkers.filter(
+//     (talker) =>
+//       talker.talk.rate === rate &&
+//       (!searchTerm || talker.name.includes(searchTerm))
+//   );
+
+//   return selectedTalkers;
+// };
+
+// const getByDate = async (date, rate, searchTerm) => {
+//   const talkers = await readFile();
+//   if (!date) return talkers;
+//   const selectedTalkers = talkers.filter(
+//     (talker) =>
+//       talker.talk.watchedAt === date &&
+//       (!rate || talker.talk.rate === rate) &&
+//       (!searchTerm || talker.name.includes(searchTerm))
+//   );
+
+//   return selectedTalkers;
+// };
 
 module.exports = {
   getAll,
@@ -81,6 +104,8 @@ module.exports = {
   insert,
   update,
   remove,
-  getBySearch,
-  getByRate,
+  getTalkers,
+  // getBySearch,
+  // getByRate,
+  // getByDate,
 };

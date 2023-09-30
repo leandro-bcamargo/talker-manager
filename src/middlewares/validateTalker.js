@@ -86,7 +86,7 @@ const validateDelete = (req, res, next) => {
 
 const validateGetSearch = (req, res, next) => {
   const { authorization } = req.headers;
-  let { rate } = req.query;
+  let { rate, date } = req.query;
 
   if (rate) {
     rate = Number(rate);
@@ -94,6 +94,16 @@ const validateGetSearch = (req, res, next) => {
       throw new CustomError(
         HTTP_CLIENT_ERROR,
         'O campo "rate" deve ser um número inteiro entre 1 e 5'
+      );
+  }
+
+  if (date) {
+    const dateRegex =
+      /^([0-2][0-9]|(3)[0-1])(\/)(((0)[0-9])|((1)[0-2]))(\/)\d{4}$/;
+    if (!dateRegex.test(date))
+      throw new CustomError(
+        HTTP_CLIENT_ERROR,
+        'O parâmetro "date" deve ter o formato "dd/mm/aaaa"'
       );
   }
 
