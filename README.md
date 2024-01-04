@@ -8,8 +8,8 @@ A aplicação foi desenvolvida em Node.js e permite fazer operações CRUD tendo
 
 Basta rodar os seguintes comandos:
 
-- `docker-compose up -d --build` Para subir o containers de Node.
-- `docker exec -it blogs_api bash` Para ter acesso ao terminal interativo do container do Node criado no passo anterior.
+- `docker-compose up -d` Para subir o containers de Node.
+- `docker exec -it talker_manager bash` Para ter acesso ao terminal interativo do container do Node criado no passo anterior.
 - `npm install` Para instalar as dependências do package.json no container do Node.
 - `npm start` Para iniciar a aplicação.
 
